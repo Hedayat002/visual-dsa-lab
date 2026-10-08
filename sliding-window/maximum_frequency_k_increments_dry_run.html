@@ -1,1 +1,147 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maximum Frequency with K Increments — Interactive Dry Run</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0c1b2e;--panel2:#10243b;--line:#254766;--text:#edf6ff;--muted:#a8bfd4;--cyan:#38bdf8;--blue:#3b82f6;--green:#34d399;--amber:#fbbf24;--pink:#e879f9;--red:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#102c4b 0,#07111f 48%,#040914 100%);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
+main{max-width:1400px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;gap:20px;align-items:center;border:1px solid #2f77ac;border-radius:18px;padding:22px;background:linear-gradient(120deg,#0b2141,#081629);box-shadow:0 12px 35px #0004}
+h1{font-size:clamp(1.55rem,3vw,2.5rem);line-height:1.12;margin:0 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p{margin:5px 0;color:var(--muted)}.eyebrow{color:var(--cyan);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.75rem}.pill{border:1px solid #28628a;background:#102a44;border-radius:99px;padding:8px 12px;white-space:nowrap;font-weight:700}
+.layout{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(400px,1.5fr) minmax(270px,.9fr);gap:15px;margin-top:16px}.panel{border:1px solid var(--line);background:linear-gradient(160deg,#0d2034ed,#091625f5);border-radius:16px;padding:17px;min-width:0;box-shadow:0 8px 25px #0002}.panel h2{display:flex;align-items:center;gap:9px}.dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);display:inline-block}.inputrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inputrow label{color:var(--muted);font-size:.85rem}.inputrow input{width:100%;min-width:0;background:#06101d;border:1px solid #315674;border-radius:9px;color:var(--text);padding:10px;font:inherit}.inputgrid{display:grid;grid-template-columns:1fr 90px;gap:10px;margin:12px 0}.btn{border:1px solid #3679a8;background:#123456;color:#fff;padding:10px 13px;border-radius:10px;font-weight:750;cursor:pointer;transition:transform .12s,background .12s}.btn:hover{background:#1a4b76}.btn:active{transform:scale(.98)}.btn.primary{background:#1465ba;border-color:#4599ed}.btn:disabled{opacity:.4;cursor:not-allowed}.controls{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.controls .btn{flex:1;min-width:74px}.speed{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.9rem}.speed input{flex:1;accent-color:var(--cyan)}.progress{height:8px;background:#162a40;border-radius:20px;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .2s}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.kpi{background:#0b1929;border:1px solid #233f59;border-radius:12px;padding:10px}.kpi small{display:block;color:var(--muted);font-size:.76rem}.kpi strong{font-size:1.25rem;color:var(--cyan);overflow-wrap:anywhere}
+.array{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin:16px 0}.cell{min-width:58px;flex:1;text-align:center;border:1px solid #34516b;background:#111f30;border-radius:12px;padding:12px 7px;position:relative;transition:all .2s}.cell b{display:block;font-size:1.35rem}.cell small{display:block;color:var(--muted)}.cell.in-window{background:linear-gradient(180deg,#123b69,#102845);border-color:#38bdf8;box-shadow:inset 0 0 0 1px #38bdf855}.cell.target{outline:2px solid var(--amber);outline-offset:2px}.cell.removed{opacity:.35}.cell .tag{font-size:.66rem;color:var(--cyan);font-weight:800}.formula{padding:13px;border:1px solid #5b4a22;background:#241d10;border-radius:12px;color:#ffedb5;overflow-wrap:anywhere}.formula code{color:#fff;font-size:1rem}.operation{border-left:3px solid var(--cyan);padding:10px 12px;background:#0a1928;border-radius:0 10px 10px 0;min-height:72px}.operation strong{color:var(--cyan)}.reason{color:var(--muted);font-size:.9rem;margin-top:4px}
+.variables{display:grid;grid-template-columns:1fr auto;gap:7px 12px}.variables span{color:var(--muted)}.variables b{font-variant-numeric:tabular-nums;color:#fff}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.8rem;margin-top:10px}.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:10px 9px;border-bottom:1px solid #243e55;text-align:left;vertical-align:top}th{color:#bde9ff;background:#0c263d;font-weight:750}td{color:#dceaf6}tr.active-row td{background:#12324b;color:white}td.good{color:var(--green)}td.warn{color:var(--amber)}.tablewrap{overflow-x:auto}.tracepanel{margin-top:15px}.bottomgrid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:15px;margin-top:15px}.code{font: .83rem/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;background:#06101c;border:1px solid #223b51;border-radius:10px;padding:12px}.code-line{display:block;padding:0 6px;border-radius:5px}.code-line.active{background:#153c5c;color:#fff;box-shadow:inset 3px 0 var(--cyan)}.kw{color:#f0abfc}.comment{color:#7dd3a8}.final{border-color:#168b68;background:linear-gradient(120deg,#07392f,#0b211e)}.answer{font-size:1.7rem;color:#86efac;font-weight:900}.badge{display:inline-block;border-radius:99px;padding:3px 8px;font-size:.76rem;font-weight:800;background:#143d35;color:#86efac}.footer{color:#829bb2;text-align:center;padding:20px 0 4px;font-size:.83rem}
+@media(max-width:1050px){.layout{grid-template-columns:1fr 1.3fr}.layout .codepanel{grid-column:1/-1}.bottomgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){main{padding:12px}.layout,.bottomgrid{grid-template-columns:1fr}header{display:block;padding:18px}.pill{display:inline-block;margin-top:10px}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.kpi strong{font-size:1.1rem}.panel{padding:14px}.controls .btn{min-width:65px;padding:9px 7px}th,td{padding:8px;font-size:.8rem}}
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="eyebrow">Algorithm visualizer · Sliding window</div><h1>Maximum Frequency with K Increments</h1><p>Sort the array, grow a window, and calculate the cost to raise every element to the window's maximum.</p></div><div class="pill">Time: O(n log n) · Extra space: O(1)</div></header>
+<section class="layout">
+<aside class="panel">
+<h2><span class="dot"></span>Input & controls</h2>
+<p>Comma-separated integers; k is the operation budget. The visualization runs the supplied solution's logic.</p>
+<div class="inputgrid"><div class="inputrow"><label for="arrInput">Array</label><input id="arrInput" value="2, 2, 4" aria-label="Array values"></div><div class="inputrow"><label for="kInput">k</label><input id="kInput" type="number" min="0" max="100000" value="4"></div></div>
+<button class="btn primary" id="loadBtn" style="width:100%">Load & build trace</button>
+<div class="controls"><button class="btn primary" id="playBtn">▶ Play</button><button class="btn" id="pauseBtn">Ⅱ Pause</button><button class="btn" id="prevBtn">← Prev</button><button class="btn" id="nextBtn">Next →</button><button class="btn" id="resetBtn">↺ Reset</button></div>
+<div class="speed"><label for="speed">Playback speed</label><input id="speed" type="range" min="250" max="1800" step="50" value="900"><b id="speedLabel">0.9s</b></div>
+<div class="progress"><span id="progressBar"></span></div><p id="stepCount">Step 1 of 1</p>
+<h2 style="margin-top:22px"><span class="dot"></span>Live variables</h2>
+<div class="variables"><span>left</span><b id="leftVal">0</b><span>right</span><b id="rightVal">—</b><span>window_sum</span><b id="sumVal">0</b><span>window size</span><b id="sizeVal">0</b><span>target</span><b id="targetVal">—</b><span>cost</span><b id="costVal">0</b><span>res</span><b id="resVal">1</b></div>
+<div class="legend"><span><i style="background:#38bdf8"></i>Current window</span><span><i style="background:#fbbf24"></i>Target value</span><span><i style="background:#fb7185"></i>Removed</span></div>
+</aside>
+<section class="panel">
+<h2><span class="dot"></span>Live array & current window</h2>
+<div class="operation"><strong id="opTitle">Ready to begin</strong><div class="reason" id="opReason">Press Next or Play to step through the algorithm.</div></div>
+<div class="array" id="arrayViz" aria-live="polite"></div>
+<div class="formula"><div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:#fbbf24">Window cost condition</div><code>cost = arr[right] × (right − left + 1) − window_sum</code><div id="formulaResult" style="margin-top:7px">Cost must be ≤ k for the window to be valid.</div></div>
+<div class="kpis"><div class="kpi"><small>Best frequency</small><strong id="bestKpi">1</strong></div><div class="kpi"><small>Operations budget</small><strong id="budgetKpi">4</strong></div><div class="kpi"><small>Sorted length</small><strong id="lengthKpi">3</strong></div></div>
+<h2 style="margin-top:20px"><span class="dot"></span>Sorted input</h2><p id="sortText">[2, 2, 4]</p>
+<div class="panel final" style="margin-top:15px"><div class="eyebrow" style="color:#86efac">Final result</div><div class="answer" id="finalAnswer">Maximum frequency: 3</div><p id="finalExplain">[2, 2, 4] can become [4, 4, 4] using 4 increments.</p></div>
+</section>
+<aside class="panel codepanel">
+<h2><span class="dot"></span>Python code trace</h2><p>Highlighted line matches the current operation.</p>
+<div class="code" id="codeBlock"><span class="code-line" data-line="1">arr.sort()</span>
+<span class="code-line" data-line="2">window_sum = 0</span>
+<span class="code-line" data-line="3">left = 0</span>
+<span class="code-line" data-line="4">res = 1</span>
+<span class="code-line" data-line="5">for right in range(len(arr)):</span>
+<span class="code-line" data-line="6">    window_sum += arr[right]</span>
+<span class="code-line" data-line="7">    while arr[right] * (right-left+1) - window_sum > k:</span>
+<span class="code-line" data-line="8">        window_sum -= arr[left]</span>
+<span class="code-line" data-line="9">        left += 1</span>
+<span class="code-line" data-line="10">    res = max(res, right-left+1)</span>
+<span class="code-line" data-line="11">return res</span></div>
+<h2 style="margin-top:18px"><span class="dot"></span>Why it works</h2><p>After sorting, arr[right] is the largest element in the current window. Only increments are allowed, so raising all window elements to this target is the cheapest way to make them equal. If the cost exceeds k, remove the leftmost value until valid.</p>
+</aside>
+</section>
+<section class="panel tracepanel">
+<h2><span class="dot"></span>Execution trace table</h2><div class="tablewrap"><table><thead><tr><th>Step</th><th>right</th><th>Added</th><th>left</th><th>Window</th><th>sum</th><th>Cost</th><th>Action</th><th>res</th></tr></thead><tbody id="traceBody"></tbody></table></div>
+</section>
+<section class="bottomgrid">
+<div class="panel"><h2><span class="dot"></span>Complexity</h2><p><b style="color:var(--cyan)">Sorting:</b> O(n log n)</p><p><b style="color:var(--cyan)">Sliding window:</b> O(n) amortized — each pointer moves forward at most n times.</p><p><b style="color:var(--cyan)">Total time:</b> O(n log n)</p><p><b style="color:var(--cyan)">Auxiliary space:</b> O(1) for the algorithm's extra variables, excluding sort implementation details and visualization trace storage.</p></div>
+<div class="panel"><h2><span class="dot"></span>Try another example</h2><p>Array <code>7, 7, 7, 7</code>, k = 5 gives frequency 4 immediately.</p><button class="btn" id="exampleBtn" style="margin-top:9px">Load example [7,7,7,7]</button><p style="margin-top:13px">Boundary idea: when k = 0, only already-equal values can share a valid window.</p></div>
+<div class="panel"><h2><span class="dot"></span>Key takeaway</h2><p>1. Sorting makes the target the rightmost value.</p><p>2. The formula calculates total increments needed.</p><p>3. Shrink only while cost &gt; k.</p><p>4. The largest valid window size is the answer.</p></div>
+</section>
+<div class="footer">Self-contained interactive HTML · Works offline in a modern browser · No external libraries</div>
+</main>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+let states=[], trace=[], idx=0, timer=null, sorted=[], k=4;
+const codeLine = n => {document.querySelectorAll('.code-line').forEach(el=>el.classList.toggle('active',Number(el.dataset.line)===n));};
+function parseInput(){
+ const raw=$('arrInput').value.trim();
+ const arr=raw.split(',').map(s=>s.trim()).filter(Boolean).map(Number);
+ const kval=Number($('kInput').value);
+ if(!arr.length || arr.some(v=>!Number.isInteger(v)||v<1||v>1e6)||arr.length>1e5||!Number.isInteger(kval)||kval<0||kval>1e5){
+  alert('Enter 1–100000 integers (each 1–1000000) and k from 0 to 100000.');return null;
+ }
+ return {arr,k:kval};
+}
+function buildTrace(arr,budget){
+ sorted=[...arr].sort((a,b)=>a-b); k=budget; states=[];trace=[];
+ let sum=0,left=0,res=1;
+ states.push({title:'Array sorted',reason:'Sort ascending so the rightmost element is the largest possible target for each window.',line:1,left,right:-1,sum,size:0,target:null,cost:0,res,action:'Sort',window:[],added:null});
+ for(let right=0;right<sorted.length;right++){
+  sum+=sorted[right];
+  let size=right-left+1,cost=sorted[right]*size-sum;
+  states.push({title:`Include arr[${right}] = ${sorted[right]}`,reason:`Add the new rightmost value to window_sum. Current window is [${left}…${right}].`,line:6,left,right,sum,size,target:sorted[right],cost,res,action:'Add value',window:sorted.slice(left,right+1),added:sorted[right]});
+  while(sorted[right]*(right-left+1)-sum>k){
+   size=right-left+1;cost=sorted[right]*size-sum;
+   states.push({title:`Cost ${cost} exceeds k = ${k}`,reason:`Window is too expensive. Remove arr[${left}] = ${sorted[left]} from window_sum and advance left.`,line:7,left,right,sum,size,target:sorted[right],cost,res,action:'Cost > k',window:sorted.slice(left,right+1),added:sorted[right]});
+   sum-=sorted[left];left++;
+   size=right-left+1;cost=sorted[right]*size-sum;
+   states.push({title:`Shrink window from the left`,reason:`After removing the old left value, the window becomes [${left}…${right}] and its cost is recalculated.`,line:8,left,right,sum,size,target:sorted[right],cost,res,action:'Shrink',window:sorted.slice(left,right+1),added:sorted[right]});
+  }
+  size=right-left+1;cost=sorted[right]*size-sum;
+  res=Math.max(res,size);
+  states.push({title:`Window valid — update res to ${res}`,reason:`Cost ${cost} ≤ k ${k}. The valid window size is ${size}; keep the maximum seen so far.`,line:10,left,right,sum,size,target:sorted[right],cost,res,action:'Valid; update res',window:sorted.slice(left,right+1),added:sorted[right]});
+  trace.push({right,added:sorted[right],left,window:sorted.slice(left,right+1),sum,cost,res,action:cost<=k?'Valid, keep':'Shrink'});
+ }
+ states.push({title:`Return ${res}`,reason:`All right endpoints have been processed. The largest valid window size is the maximum frequency.`,line:11,left,right:sorted.length-1,sum,size:res,target:sorted.length?sorted[sorted.length-1]:null,cost:0,res,action:'Return answer',window:[],added:null});
+ idx=0;render();
+}
+function render(){
+ const s=states[idx];if(!s)return;
+ $('stepCount').textContent=`Step ${idx+1} of ${states.length}`;
+ $('progressBar').style.width=`${states.length<=1?100:idx/(states.length-1)*100}%`;
+ $('opTitle').textContent=s.title;$('opReason').textContent=s.reason;
+ $('leftVal').textContent=s.left;$('rightVal').textContent=s.right<0?'—':s.right;
+ $('sumVal').textContent=s.sum;$('sizeVal').textContent=s.size;$('targetVal').textContent=s.target??'—';
+ $('costVal').textContent=s.cost;$('resVal').textContent=s.res;$('bestKpi').textContent=s.res;
+ $('budgetKpi').textContent=k;$('lengthKpi').textContent=sorted.length;
+ $('sortText').textContent='['+sorted.join(', ')+']';
+ $('formulaResult').textContent=s.target===null?'Start by sorting the array.':`Current cost: ${s.target} × ${s.size} − ${s.sum} = ${s.cost}; budget k = ${k}. ${s.cost<=k?'Window is valid.':'Window is invalid; shrink from left.'}`;
+ const winStart=s.left,winEnd=s.right;
+ $('arrayViz').innerHTML=sorted.map((v,i)=>{
+  const inside=s.right>=0&&i>=winStart&&i<=winEnd;
+  const target=inside&&v===s.target;
+  return `<div class="cell ${inside?'in-window':''} ${target?'target':''} ${s.right>=0&&i<winStart?'removed':''}"><small>index ${i}</small><b>${v}</b><span class="tag">${inside?(target?'TARGET':'IN WINDOW'):(s.right>=0&&i<winStart?'OUTSIDE':'SORTED')}</span></div>`;
+ }).join('');
+ $('finalAnswer').textContent=`Maximum frequency: ${states[states.length-1].res}`;
+ const answer=states[states.length-1].res;
+ $('finalExplain').textContent=`Sorted array [${sorted.join(', ')}], k = ${k}. The algorithm's maximum valid window size is ${answer}.`;
+ $('prevBtn').disabled=idx===0;$('nextBtn').disabled=idx===states.length-1;
+ codeLine(s.line);
+ $('traceBody').innerHTML=trace.map((t,i)=>`<tr class="${s.right===t.right?'active-row':''}"><td>${i+1}</td><td>${t.right}</td><td>${t.added}</td><td>${t.left}</td><td>[${t.window.join(', ')}]</td><td>${t.sum}</td><td>${t.cost}</td><td class="${t.action.startsWith('Valid')?'good':'warn'}">${t.action}</td><td>${t.res}</td></tr>`).join('');
+}
+function stop(){if(timer){clearInterval(timer);timer=null;}$('playBtn').textContent='▶ Play';}
+function next(){if(idx<states.length-1){idx++;render()}else stop();}
+function play(){if(timer)return;if(idx>=states.length-1)idx=0;render();$('playBtn').textContent='▶ Playing';timer=setInterval(()=>{if(idx>=states.length-1){stop();return;}idx++;render();},Number($('speed').value));}
+$('loadBtn').addEventListener('click',()=>{stop();const x=parseInput();if(x)buildTrace(x.arr,x.k);});
+$('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',stop);
+$('prevBtn').addEventListener('click',()=>{stop();idx=Math.max(0,idx-1);render()});
+$('nextBtn').addEventListener('click',()=>{stop();next()});
+$('resetBtn').addEventListener('click',()=>{stop();idx=0;render()});
+$('speed').addEventListener('input',()=>{$('speedLabel').textContent=(Number($('speed').value)/1000).toFixed(2)+'s';if(timer){stop();play();}});
+$('exampleBtn').addEventListener('click',()=>{$('arrInput').value='7, 7, 7, 7';$('kInput').value='5';stop();const x=parseInput();if(x)buildTrace(x.arr,x.k);});
+buildTrace([2,2,4],4);
+})();
+</script>
+</body>
+</html>
