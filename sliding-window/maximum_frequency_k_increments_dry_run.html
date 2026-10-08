@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maximum Frequency with K Increments — Interactive Dry Run</title>
+<style>
+:root{--bg:#f3f7fc;--card:#fff;--ink:#14233f;--muted:#64748b;--line:#dbe6f4;--blue:#2476f2;--blue-soft:#e7f1ff;--green:#169653;--green-soft:#e4f8eb;--yellow:#f5a524;--yellow-soft:#fff4d6;--pink:#ef6666;--pink-soft:#fff0f0;--purple:#8b5cf6;--shadow:0 8px 24px #17365d0b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f4f8ff,#f8fbff 55%,#effaf4);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink)}
+header{margin:12px;background:linear-gradient(120deg,#14233f,#243c5b);color:white;border-radius:16px;padding:22px 26px;box-shadow:var(--shadow)}
+h1{font-size:clamp(1.45rem,3vw,2.15rem);margin:0 0 6px;letter-spacing:-.04em}header p{margin:0;color:#dbeafe;line-height:1.5}.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.pill{font-size:.78rem;font-weight:750;padding:6px 11px;border-radius:999px;background:#ffffff1b;border:1px solid #ffffff35}
+main{padding:0 12px 20px;display:grid;grid-template-columns:minmax(235px,.82fr) minmax(340px,1.75fr) minmax(260px,1fr);gap:12px;align-items:start}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px;min-width:0}.stack{display:grid;gap:12px}.section-title{font-size:1.02rem;font-weight:850;margin:0 0 13px;display:flex;gap:9px;align-items:center}.section-title span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--blue-soft);color:var(--blue)}
+label{font-size:.85rem;font-weight:750;display:block;margin:12px 0 6px}input{width:100%;border:1px solid #c9d8eb;border-radius:9px;padding:11px 12px;font:inherit;color:var(--ink);background:#fbfdff;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2476f21c}.hint{font-size:.78rem;color:var(--muted);margin-top:5px;line-height:1.45}
+button,select{font:inherit;border-radius:9px;border:1px solid var(--line);padding:9px 12px;background:white;color:var(--ink);font-weight:750;cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #2476f260;outline-offset:2px}button.primary{background:var(--blue);color:white;border-color:var(--blue)}button:hover{filter:brightness(.98)}button:disabled{opacity:.45;cursor:not-allowed}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.example{display:block;text-align:left;width:100%;margin:7px 0 0;padding:11px;border-radius:10px;background:#f8fbff}.example strong{display:block}.example small{display:block;color:var(--muted);margin-top:4px}.example.active{border-color:var(--blue);background:var(--blue-soft)}
+.center{display:grid;gap:12px}.step-banner{background:linear-gradient(110deg,#fff0f0,#fff8f8);border-color:#ffd9d9}.step-top{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.step-top h2{font-size:1.15rem;margin:0;color:#9f2525}.status{padding:5px 9px;border-radius:999px;background:#ffe1e1;color:#a11d1d;font-size:.76rem;font-weight:800}.operation{line-height:1.55;margin:10px 0 0;color:#34445c}
+.visual-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(190px,.85fr);gap:12px}.chart-wrap{padding:10px 4px 0}.window-label{text-align:center;color:#1765d9;font-weight:850;margin:2px 0 10px}.bars{height:220px;display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,2vw,24px);padding:14px 12px 0;border-bottom:2px solid #dce7f5;position:relative;overflow:hidden}.bars:before{content:"";position:absolute;inset:0 4% 0;border:2px dashed #4c91f9;border-bottom:0;border-radius:8px 8px 0 0;pointer-events:none;opacity:.8}.bar-cell{z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:48px;flex:0 1 72px}.bar{width:100%;max-width:68px;min-height:14px;border-radius:7px 7px 0 0;border:1px solid #1771e8;background:linear-gradient(180deg,#60adff,#3f8ef3);display:flex;justify-content:center;align-items:flex-start;padding-top:6px;color:#082e68;font-weight:900;transition:height .25s ease}.bar.target{background:linear-gradient(180deg,#ff958c,#f46b63);border-color:#e84949;color:#7c1515}.bar.outside{opacity:.28}.bar-value{font-weight:850;margin-bottom:7px}.index{padding:7px 0;font-size:.8rem;color:#52647d}.cost-card{background:linear-gradient(145deg,#fff9e6,#fff3c9);border-color:#ffedb0}.cost-card h3{margin:0 0 9px;color:#a45a00;font-size:1rem}.formula{font-size:1rem;line-height:1.9;font-weight:800;overflow-wrap:anywhere}.formula .muted{font-weight:600;color:#46556b}.valid{margin-top:10px;color:#147744;font-size:.88rem;font-weight:800;line-height:1.45}.invalid{color:#b42318}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stat-label{font-size:.78rem;color:#56667d;margin-bottom:7px}.stat-value{border-radius:9px;padding:12px 6px;text-align:center;font-weight:900;font-size:1.08rem;overflow-wrap:anywhere}.s-blue{background:var(--blue-soft);color:#145ac0}.s-green{background:var(--green-soft);color:#147744}.s-purple{background:#f0e9ff;color:#6c35d4}.s-yellow{background:var(--yellow-soft);color:#a45a00}
+.trace{grid-column:1 / 3}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:680px}th,td{border:1px solid #dce6f1;padding:9px 8px;text-align:center;white-space:nowrap}th{background:#edf3fa;color:#34445c;font-weight:850}tbody tr.active{background:#e0f0ff;color:#104b9b;font-weight:800}tbody tr.valid td:nth-child(8){color:#168247}tbody tr.invalid td:nth-child(8){color:#b42318}
+.result{grid-column:1 / 3;background:linear-gradient(110deg,#eaf9ef,#f1fff5);border-color:#c8f0d5;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}.result h2{margin:0 0 8px;color:#16743c}.result p{margin:0;line-height:1.5}.result-side{border-left:1px solid #b8e6c6;padding-left:18px}.big-answer{font-size:1.4rem;font-weight:900;color:#13753a}.right{display:grid;gap:12px}.steps{list-style:none;padding:0;margin:0;display:grid;gap:10px}.steps li{display:grid;grid-template-columns:29px 1fr;gap:10px;align-items:start;line-height:1.45;font-size:.9rem}.num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:white;font-weight:900}.steps li:nth-child(2) .num{background:#28a75d}.steps li:nth-child(3) .num{background:#8b5cf6}.steps li:nth-child(4) .num{background:#f59e0b}.steps li:nth-child(5) .num{background:#ef6262}.steps li:nth-child(6) .num{background:#0eb7b0}
+pre{margin:0;background:#f7faff;border:1px solid #e1eaf5;border-radius:9px;padding:13px;overflow:auto;font-size:.77rem;line-height:1.65;color:#183052}pre .line{display:block;padding:0 5px;border-radius:4px;white-space:pre}.line.active{background:#ffefbd;outline:1px solid #f6d875}.code-caption{color:var(--muted);font-size:.77rem;margin-top:9px;line-height:1.45}
+.playbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}.playbar button{min-width:42px}.playbar label{display:flex;align-items:center;gap:8px;margin:0 0 0 auto;font-size:.8rem}.playbar input[type=range]{width:105px;padding:0;box-shadow:none}.progress{height:7px;background:#e7eef7;border-radius:99px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#2476f2,#2ebd75);width:0%;transition:width .2s}.why{margin-top:10px;padding:10px 12px;background:#f6f9fd;border-radius:9px;font-size:.84rem;line-height:1.5;color:#42536c}
+@media(max-width:1100px){main{grid-template-columns:minmax(220px,.8fr) minmax(0,1.7fr)}.right{grid-column:1 / -1;grid-template-columns:1fr 1fr}.trace,.result{grid-column:1 / -1}}
+@media(max-width:700px){header{margin:8px;padding:18px}main{padding:0 8px 16px;grid-template-columns:1fr}.right{grid-column:auto;grid-template-columns:1fr}.trace,.result{grid-column:auto}.visual-grid{grid-template-columns:1fr}.bars{height:190px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.result{grid-template-columns:1fr}.result-side{border-left:0;border-top:1px solid #b8e6c6;padding:13px 0 0}.panel,.card{padding:13px}.playbar label{margin:6px 0 0;width:100%}.playbar input[type=range]{flex:1}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>Maximum Frequency with K Increments</h1><p>Use at most <b>k</b> increment operations to make the frequency of any element as large as possible.</p><div class="pills"><span class="pill">Sliding Window</span><span class="pill">Sorting</span><span class="pill">Greedy</span><span class="pill">O(n log n)</span></div></header>
+<main>
+ <aside class="stack">
+  <section class="panel"><h2 class="section-title"><span>⚙</span> Input</h2>
+   <label for="arrInput">Array (comma-separated)</label><input id="arrInput" value="2, 2, 4" aria-describedby="arrHint"><div class="hint" id="arrHint">Values are sorted automatically before the run.</div>
+   <label for="kInput">k (maximum operations)</label><input id="kInput" type="number" min="0" max="100000" value="4">
+   <div class="button-row"><button class="primary" id="loadBtn">↻ Load / Run</button><button id="resetBtn">⟲ Reset</button></div><div class="hint" id="inputError" role="alert"></div>
+  </section>
+  <section class="panel"><h2 class="section-title"><span>▦</span> Example Inputs</h2>
+   <button class="example active" data-arr="2, 2, 4" data-k="4"><strong>Example 1</strong><small>arr = [2, 2, 4], k = 4</small></button>
+   <button class="example" data-arr="7, 7, 7, 7" data-k="5"><strong>Example 2</strong><small>arr = [7, 7, 7, 7], k = 5</small></button>
+   <button class="example" data-arr="1, 2, 4, 9" data-k="5"><strong>Example 3</strong><small>arr = [1, 2, 4, 9], k = 5</small></button>
+  </section>
+  <section class="panel"><h2 class="section-title"><span>◉</span> Playback</h2>
+   <div class="playbar" style="margin-top:0"><button id="playBtn" class="primary">▶ Play</button><button id="pauseBtn">Ⅱ Pause</button></div>
+   <div class="playbar"><button id="prevBtn" aria-label="Previous step">◀ Prev</button><button id="nextBtn" aria-label="Next step">Next ▶</button></div>
+   <div class="playbar"><label for="speed">Playback speed <input id="speed" type="range" min="300" max="1800" step="300" value="900"><span id="speedLabel">0.9s</span></label></div>
+   <div class="progress"><div id="progressFill"></div></div><div class="hint" id="stepCounter">Step 1 of 3</div>
+  </section>
+ </aside>
+ <section class="center">
+  <section class="card step-banner"><div class="step-top"><h2 id="stepTitle">Step 1: Add the first element</h2><span class="status" id="stepStatus">VALID WINDOW</span></div><p class="operation" id="operation">Start with the smallest window. Its only element is already the target.</p></section>
+  <section class="card">
+   <div class="visual-grid">
+    <div class="chart-wrap"><div class="window-label" id="windowLabel">Current Window: [left = 0, right = 0]</div><div class="bars" id="bars" aria-label="Array bar visualization"></div></div>
+    <div class="card cost-card"><h3>Cost Calculation</h3><div class="hint" id="costIntro">Make every element equal to the current rightmost value.</div><div class="formula" id="formula"></div><div class="valid" id="validMessage"></div></div>
+   </div>
+   <div class="why" id="reason">Why: the window contains one element, so no increments are required.</div>
+  </section>
+  <section class="card"><h2 class="section-title"><span>▤</span> Window Details</h2><div class="stats">
+   <div><div class="stat-label">Elements in window</div><div class="stat-value s-blue" id="windowValues">[2]</div></div>
+   <div><div class="stat-label">Window sum</div><div class="stat-value s-green" id="sumValue">2</div></div>
+   <div><div class="stat-label">Target value</div><div class="stat-value s-purple" id="targetValue">2</div></div>
+   <div><div class="stat-label">Operations needed</div><div class="stat-value s-yellow" id="costValue">0</div></div>
+  </div></section>
+ </section>
+ <aside class="right">
+  <section class="panel"><h2 class="section-title"><span>💡</span> Algorithm (Sliding Window)</h2><ol class="steps">
+   <li><span class="num">1</span><span>Sort the array in ascending order.</span></li>
+   <li><span class="num">2</span><span>Move <code>right</code> across the sorted array and add each value to <code>window_sum</code>.</span></li>
+   <li><span class="num">3</span><span>Calculate the cost to raise the whole window to <code>arr[right]</code>.</span></li>
+   <li><span class="num">4</span><span>If cost exceeds <code>k</code>, remove left values until the window is valid.</span></li>
+   <li><span class="num">5</span><span>Update <code>res</code> with the current window size.</span></li>
+   <li><span class="num">6</span><span>The largest valid window is the maximum frequency.</span></li>
+  </ol></section>
+  <section class="panel"><h2 class="section-title"><span>‹/›</span> Code (Python)</h2><pre id="code"><code><span class="line" data-line="1">class Solution:</span><span class="line" data-line="2">    def maxFrequency(self, arr, k):</span><span class="line" data-line="3">        arr.sort()</span><span class="line" data-line="4">        window_sum = 0</span><span class="line" data-line="5">        left = 0</span><span class="line" data-line="6">        res = 1</span><span class="line" data-line="7">        for right in range(len(arr)):</span><span class="line" data-line="8">            window_sum += arr[right]</span><span class="line" data-line="9">            while arr[right] * (right-left+1) - window_sum &gt; k:</span><span class="line" data-line="10">                window_sum -= arr[left]</span><span class="line" data-line="11">                left += 1</span><span class="line" data-line="12">            res = max(res, right-left+1)</span><span class="line" data-line="13">        return res</span></code></pre><div class="code-caption" id="codeCaption">Highlighted line follows the current operation.</div></section>
+ </aside>
+ <section class="panel trace"><h2 class="section-title"><span>☷</span> Step-by-Step Trace</h2><div class="table-scroll"><table><thead><tr><th>Step</th><th>right</th><th>Added value</th><th>Window [left, right]</th><th>Elements</th><th>Sum</th><th>Target</th><th>Cost</th><th>Action</th><th>Current max</th></tr></thead><tbody id="traceBody"></tbody></table></div><div class="hint">The highlighted row matches the current playback step. A window is valid when cost ≤ k.</div></section>
+ <section class="panel result"><div><h2>🏆 Result</h2><p class="big-answer" id="answer">Maximum possible frequency = 3</p><p id="resultExplanation">All three values can be raised to 4 using four operations.</p></div><div class="result-side"><h2 style="font-size:1rem">Final Array (one possible way)</h2><p id="finalArray">[4, 4, 4]</p><div class="hint" id="finalNote">Two increments on index 0 and two on index 1.</div></div></section>
+</main>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const arrInput=$('arrInput'), kInput=$('kInput'); let arr=[], k=4, trace=[], current=0, timer=null, delay=900;
+ const fmt=a=>'['+a.join(', ')+']';
+ function buildTrace(values,budget){
+  const a=[...values].sort((x,y)=>x-y), out=[]; let sum=0,left=0,res=1;
+  for(let right=0;right<a.length;right++){
+   sum+=a[right]; let shrinks=[];
+   while(a[right]*(right-left+1)-sum>budget){const oldLeft=left;sum-=a[left];left++;shrinks.push({removed:a[oldLeft],left});}
+   res=Math.max(res,right-left+1);
+   out.push({right,added:a[right],left,rightIndex:right,window:a.slice(left,right+1),sum,target:a[right],cost:a[right]*(right-left+1)-sum,res,shrinks,sorted:a.slice(),valid:true});
+  }
+  return {a,out,res};
+ }
+ function explain(s,i){
+  if(s.shrinks.length){return `Cost was too high, so remove ${s.shrinks.map(x=>x.removed).join(', ')} from the left until the window is affordable.`}
+  if(i===0)return 'A one-element window is always valid: its target and sum are the same.';
+  return `Raise every value in the window to ${s.target}. The required increments fit within k = ${k}.`;
+ }
+ function load(){
+  stop(); $('inputError').textContent='';
+  const raw=arrInput.value.split(',').map(x=>x.trim());
+  const nums=raw.map(Number);
+  const budget=Number(kInput.value);
+  if(!raw.length||raw.some(x=>x==='' )||nums.some(x=>!Number.isInteger(x)||x<1||x>1e6)||nums.length>100000){$('inputError').textContent='Enter 1–100,000 integers, each from 1 to 1,000,000.';return;}
+  if(!Number.isInteger(budget)||budget<0||budget>100000){$('inputError').textContent='k must be an integer from 0 to 100,000.';return;}
+  arr=nums;k=budget;const built=buildTrace(arr,k);arr=built.a;trace=built.out;current=0;
+  document.querySelectorAll('.example').forEach(b=>b.classList.toggle('active',b.dataset.arr===arrInput.value.trim()&&Number(b.dataset.k)===k));
+  render();
+ }
+ function render(){
+  if(!trace.length)return; const s=trace[current], n=trace.length;
+  $('stepTitle').textContent=`Step ${current+1}: ${s.shrinks.length?'Shrink window to restore validity':`Expand window to right = ${s.right}`}`;
+  $('stepStatus').textContent=s.shrinks.length?'SHRUNK WINDOW':'VALID WINDOW';
+  $('operation').textContent=`Add arr[${s.right}] = ${s.added}. Window is ${fmt(s.window)}; target is ${s.target}.`;
+  $('windowLabel').textContent=`Current Window: [left = ${s.left}, right = ${s.right}]`;
+  const max=Math.max(...arr,1), bars=$('bars');bars.innerHTML='';
+  arr.forEach((v,i)=>{const cell=document.createElement('div');cell.className='bar-cell';const val=document.createElement('div');val.className='bar-value';val.textContent=v;const bar=document.createElement('div');bar.className='bar'+(i===s.right?' target':'')+(i<s.left||i>s.right?' outside':'');bar.style.height=Math.max(8,v/max*150)+'px';bar.title=`arr[${i}] = ${v}`;bar.setAttribute('aria-label',`index ${i}, value ${v}`);const idx=document.createElement('div');idx.className='index';idx.textContent=i;cell.append(val,bar,idx);bars.append(cell);});
+  const cost=s.target*(s.right-s.left+1)-s.sum;
+  $('formula').innerHTML=`<div>${s.target} × ${s.right-s.left+1} − ${s.sum}</div><div class="muted">= ${s.target*(s.right-s.left+1)} − ${s.sum}</div><div>= ${cost}</div>`;
+  $('validMessage').className='valid'+(cost>k?' invalid':'');$('validMessage').textContent=cost<=k?`✓ ${cost} ≤ k (${k}) — window is valid.`:`Cost ${cost} > k (${k}) — shrink from left.`;
+  $('reason').textContent='Why: '+explain(s,current);
+  $('windowValues').textContent=fmt(s.window);$('sumValue').textContent=s.sum;$('targetValue').textContent=s.target;$('costValue').textContent=cost;
+  $('stepCounter').textContent=`Step ${current+1} of ${n}`;$('progressFill').style.width=((current+1)/n*100)+'%';
+  $('prevBtn').disabled=current===0;$('nextBtn').disabled=current===n-1;
+  document.querySelectorAll('#traceBody tr').forEach((tr,i)=>tr.classList.toggle('active',i===current));
+  const line=current===0?8:(s.shrinks.length?10:12);
+  document.querySelectorAll('#code .line').forEach(el=>el.classList.toggle('active',Number(el.dataset.line)===line));
+  $('codeCaption').textContent=`Current operation: ${line===8?'add arr[right] to window_sum':line===10?'remove arr[left] from window_sum':'update res with the window size'}.`;
+  const final=buildTrace(arr,k);
+  $('answer').textContent=`Maximum possible frequency = ${final.res}`;
+  $('resultExplanation').textContent=`Largest affordable window has ${final.res} element(s).`;
+  const best=[...final.out].reverse().find(x=>x.window.length===final.res);
+  const finalArr=arr.slice();
+  for(let j=best.left;j<=best.rightIndex;j++) finalArr[j]=best.target;
+  $('finalArray').textContent=fmt(finalArr);
+  $('finalNote').textContent=`Raise indices ${best.left}–${best.rightIndex} to ${best.target}; cost = ${best.cost} operation(s), within k = ${k}.`;
+ }
+ function renderTable(){
+  $('traceBody').innerHTML='';trace.forEach((s,i)=>{const tr=document.createElement('tr');tr.className=s.cost<=k?'valid':'invalid';const cells=[i+1,s.right,s.added,`[${s.left}, ${s.right}]`,fmt(s.window),s.sum,s.target,s.cost,s.cost<=k?'Valid':'Shrunk',s.res];cells.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});$('traceBody').append(tr);});
+ }
+ function loadAndRender(){load();if(trace.length)renderTable();}
+ function stop(){if(timer){clearInterval(timer);timer=null;}}
+ function play(){if(timer||current>=trace.length-1)return;timer=setInterval(()=>{if(current>=trace.length-1){stop();return;}current++;render();},delay);}
+ $('loadBtn').addEventListener('click',loadAndRender);
+ $('resetBtn').addEventListener('click',()=>{stop();current=0;render();});
+ $('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',stop);
+ $('prevBtn').addEventListener('click',()=>{stop();current=Math.max(0,current-1);render();});
+ $('nextBtn').addEventListener('click',()=>{stop();current=Math.min(trace.length-1,current+1);render();});
+ $('speed').addEventListener('input',e=>{delay=Number(e.target.value);$('speedLabel').textContent=(delay/1000).toFixed(1)+'s';if(timer){stop();play();}});
+ document.querySelectorAll('.example').forEach(b=>b.addEventListener('click',()=>{arrInput.value=b.dataset.arr;kInput.value=b.dataset.k;loadAndRender();}));
+ loadAndRender();
+})();
+</script>
+</body></html>
