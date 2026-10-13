@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Temppro Visual Dry Run — 3727 Maximum Alternating Sum of Squares</title>
+<style>
+:root{--bg:#080d18;--panel:#0e1728;--panel2:#101d31;--line:#24405f;--text:#e7f0ff;--muted:#91a6c4;--cyan:#54d9ff;--blue:#5d8cff;--green:#54e0a0;--yellow:#ffd166;--red:#ff7185;--purple:#c69cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#122442 0,#080d18 58%);color:var(--text);font:14px/1.35 Inter,Segoe UI,Arial,sans-serif}
+.app{max-width:1600px;margin:auto;padding:12px;min-height:100vh;display:flex;flex-direction:column;gap:10px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#0b1424}
+h1{font-size:20px;margin:0 0 3px;letter-spacing:.2px} .sub{color:var(--muted);font-size:12px}.tag{border:1px solid #326184;color:var(--cyan);border-radius:20px;padding:5px 9px;font-size:11px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(210px, .85fr) minmax(400px,1.55fr) minmax(300px,1.1fr);gap:10px;align-items:stretch;flex:1}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}.panel{border:1px solid var(--line);background:linear-gradient(145deg,rgba(17,29,49,.97),rgba(10,19,34,.97));border-radius:11px;padding:11px;min-width:0;box-shadow:0 5px 18px #0002}
+.panel h2{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);margin:0 0 9px}.panel h3{font-size:13px;margin:0 0 7px}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}.formula{font-family:ui-monospace,Consolas,monospace;color:#dceaff;background:#09111e;border:1px solid #1d3552;border-radius:8px;padding:9px;overflow-wrap:anywhere}
+textarea,input,select{background:#07111f;color:var(--text);border:1px solid #315173;border-radius:7px;padding:8px;font:13px ui-monospace,Consolas,monospace;width:100%}textarea{resize:vertical;min-height:54px}
+button{background:#132843;border:1px solid #315b80;color:var(--text);border-radius:7px;padding:7px 10px;cursor:pointer;font-weight:600}button:hover{border-color:var(--cyan);background:#183451}button.primary{background:#124b60;border-color:#2f9bb7}button:disabled{opacity:.35;cursor:not-allowed}
+.inputrow{display:grid;grid-template-columns:1fr auto;gap:7px}.metricrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.metric{padding:8px;border:1px solid #234363;border-radius:8px;background:#0a1525}.metric .label{font-size:10px;color:var(--muted);text-transform:uppercase}.metric .val{font-size:20px;font-weight:750;margin-top:2px}.cyan{color:var(--cyan)}.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}.purple{color:var(--purple)}
+.centerVisual{flex:1;display:flex;flex-direction:column;gap:10px}.keyidea{border-left:3px solid var(--yellow);padding:8px 10px;background:#171c29;border-radius:4px;color:#dce5f4;font-size:12px}
+.cells{display:flex;gap:7px;flex-wrap:wrap;align-items:stretch}.cell{min-width:58px;flex:1;text-align:center;border:1px solid #315173;border-radius:8px;padding:8px 4px;background:#0a1525;position:relative}.cell .idx{font-size:10px;color:var(--muted)}.cell .num{font-size:19px;font-weight:800;margin:4px 0}.cell .sq{font-size:11px;color:var(--muted)}.cell.pos{border-color:#328c6b;background:#102a28}.cell.neg{border-color:#a24b61;background:#2b1724}.cell.active{outline:2px solid var(--yellow);outline-offset:1px;transform:translateY(-2px)}.cell.chosen{box-shadow:inset 0 -3px var(--green)}.cell.subtracted{box-shadow:inset 0 -3px var(--red)}
+.slotlabel{font-size:10px;letter-spacing:.5px;font-weight:800}.operation{border:1px solid #3b4d6b;background:#091321;border-radius:9px;padding:10px}.operation .op{font-size:15px;font-weight:750;margin-bottom:4px}.operation .why{color:#b8c9e2;font-size:12px}
+.scoreline{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.term{padding:6px 9px;border-radius:7px;background:#102033;border:1px solid #284666;font-family:ui-monospace,Consolas,monospace}.term.plus{color:var(--green);border-color:#287b60}.term.minus{color:var(--red);border-color:#8d4053}.term.current{outline:2px solid var(--yellow)}
+.progress{height:6px;background:#1b2b41;border-radius:99px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0;transition:width .2s}
+.controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.controls button{padding:7px 9px}.speed{display:flex;align-items:center;gap:7px;margin-left:auto;color:var(--muted);font-size:11px}.speed select{width:92px;padding:6px}
+pre{margin:0;white-space:pre;overflow:auto;font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;max-height:310px}.code-line{display:block;padding:0 7px;border-left:3px solid transparent;color:#cbd8eb}.code-line.hl{background:#24364c;border-left-color:var(--yellow);color:#fff}.ln{display:inline-block;width:22px;color:#627c9f;user-select:none}.kw{color:#c69cff}.fn{color:#70d9ff}.numlit{color:#ffd166}
+table{border-collapse:collapse;width:100%;font-size:11px}th,td{padding:6px 7px;border-bottom:1px solid #203651;text-align:left;white-space:nowrap}th{color:var(--muted);font-weight:650;position:sticky;top:0;background:#101d31}tbody tr.active{background:#24364b;color:#fff}tbody tr.active td:first-child{color:var(--yellow)}.tracewrap{max-height:145px;overflow:auto;border:1px solid #203651;border-radius:7px}
+.footergrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.smallbox{border:1px solid #223d5b;border-radius:8px;padding:8px;background:#0a1423;font-size:11px}.smallbox strong{display:block;color:var(--cyan);margin-bottom:3px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr 1fr}.left{grid-column:1}.middle{grid-column:2}.right{grid-column:1/-1}.right pre{max-height:240px}}
+@media(max-width:680px){.app{padding:7px}.layout{display:flex;flex-direction:column}h1{font-size:17px}.tag{display:none}.cells{gap:5px}.cell{min-width:48px}.speed{margin-left:0}header{align-items:flex-start}.tracewrap{max-height:220px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div><h1>3727 · Maximum Alternating Sum of Squares</h1><div class="sub">TEMPPRO DSA VISUALIZER · Greedy + Sorting · Original Python approach preserved</div></div><div class="tag">INTERACTIVE DRY RUN</div></header>
+<div class="layout">
+ <aside class="col left">
+  <section class="panel"><h2>01 · Input & setup</h2><label class="tiny" for="numsInput">nums (comma-separated integers)</label><textarea id="numsInput">1, 2, 3</textarea><div class="inputrow" style="margin-top:7px"><button class="primary" id="buildBtn">Build dry run</button><button id="exampleBtn">Example 2</button></div><div class="metricrow" style="margin-top:9px"><div class="metric"><div class="label">Array length n</div><div class="val cyan" id="nVal">3</div></div><div class="metric"><div class="label">Positive slots k</div><div class="val green" id="kVal">2</div></div></div></section>
+  <section class="panel"><h2>02 · Key idea</h2><div class="keyidea">Even indices contribute <b class="green">+</b>, odd indices contribute <b class="red">−</b>. Put the largest squares in positive slots and the smallest squares in negative slots.</div><div class="formula" style="margin-top:8px">k = (n + 1) // 2<br>max score = sum(largest k squares) − sum(smallest n−k squares)</div></section>
+  <section class="panel"><h2>03 · Variables</h2><div class="tiny"><b class="cyan">nums</b> — sorted by x², ascending<br><b class="cyan">n</b> — array length<br><b class="cyan">k</b> — count of positive slots<br><b class="cyan">ans</b> — running score<br><b class="cyan">i</b> — loop index</div></section>
+  <section class="panel"><h2>04 · Complexity</h2><div class="footergrid"><div class="smallbox"><strong>Time</strong>O(n log n) sorting + O(n) loops</div><div class="smallbox"><strong>Space</strong>O(1) auxiliary, excluding sort implementation</div></div></section>
+ </aside>
+ <main class="col middle">
+  <section class="panel centerVisual"><h2>02 · Live execution canvas</h2><div class="operation"><div class="tiny" id="stepLabel">STEP 1 / 1</div><div class="op" id="opTitle">Ready</div><div class="why" id="opWhy">Press Next or Play to start the dry run.</div></div>
+   <div><h3>Sorted values · ordered by square</h3><div class="cells" id="arrayCells"></div></div>
+   <div><h3>Slot assignment · largest k squares get +</h3><div class="cells" id="slotCells"></div></div>
+   <div><h3>Score construction</h3><div class="scoreline" id="terms"></div></div>
+   <div class="metricrow"><div class="metric"><div class="label">Running answer</div><div class="val yellow" id="ansVal">0</div></div><div class="metric"><div class="label">Current action</div><div class="val cyan" style="font-size:15px" id="actionVal">Initialize</div></div></div>
+   <div class="progress"><div id="progressFill"></div></div><div class="controls"><button id="playBtn" class="primary">▶ Play</button><button id="pauseBtn">Ⅱ Pause</button><button id="prevBtn">◀ Previous</button><button id="nextBtn">Next ▶</button><button id="resetBtn">↺ Reset</button><div class="speed">Speed <select id="speedSel"><option value="1200">0.5×</option><option value="800" selected>1×</option><option value="400">2×</option><option value="180">4×</option></select></div></div>
+   <div class="tiny" id="statusText">Step 0 of 0 · Build the dry run to begin.</div>
+  </section>
+ </main>
+ <aside class="col right">
+  <section class="panel"><h2>05 · Submitted Python code</h2><pre id="codePanel"></pre></section>
+  <section class="panel"><h2>06 · Execution trace</h2><div class="tracewrap"><table><thead><tr><th>Step</th><th>Operation</th><th>i / index</th><th>Contribution</th><th>ans</th></tr></thead><tbody id="traceBody"></tbody></table></div></section>
+  <section class="panel"><h2>07 · Correctness takeaway</h2><div class="tiny">Every even index adds a square and every odd index subtracts one. Since rearrangement is allowed, the best assignment pairs the largest ⌈n/2⌉ squares with positive signs. Sorting by x² makes the two groups easy to select. Squaring means the original number's sign does not affect its contribution.</div></section>
+ </aside>
+</div>
+</div>
+<script>
+const codeLines=[
+"class Solution:",
+"    def maxAlternatingSum(self, nums: List[int]) -> int:",
+"        nums.sort(key=lambda x: x * x)",
+"",
+"        n = len(nums)",
+"        k = (n + 1) // 2",
+"",
+"        ans = 0",
+"",
+"        for i in range(k):",
+"            ans += nums[n - 1 - i] ** 2",
+"",
+"        for i in range(n - k):",
+"            ans -= nums[i] ** 2",
+"",
+"        return ans"
+];
+const lineMap={sort:3,n:5,k:6,init:8,add:11,sub:14,return:16};
+let states=[], cursor=0, timer=null, nums=[], sorted=[], k=0;
+const $=id=>document.getElementById(id);
+function renderCode(active){$('codePanel').innerHTML=codeLines.map((line,i)=>`<span class="code-line ${i+1===active?'hl':''}"><span class="ln">${String(i+1).padStart(2,' ')}</span>${escapeHtml(line)||' '}</span>`).join('');}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function push(title,why,line,action,ans,idx,contrib,kind,arrIndex=-1){
+ states.push({title,why,line,action,ans,idx,contrib,kind,arrIndex,sorted:sorted.slice(),n:nums.length,k,terms:buildTerms()});
+}
+function buildTerms(){
+ const terms=[];
+ for(let i=0;i<k;i++)terms.push({val:sorted[sorted.length-1-i],sq:sorted[sorted.length-1-i]**2,sign:'+',idx:2*i});
+ for(let i=0;i<nums.length-k;i++)terms.push({val:sorted[i],sq:sorted[i]**2,sign:'-',idx:2*(k+i)-1});
+ return terms;
+}
+function build(){
+ pause();
+ let raw=$('numsInput').value.trim();
+ if(!raw){alert('Please enter at least one integer.');return;}
+ const parsed=raw.split(/[\s,;]+/).filter(Boolean).map(Number);
+ if(!parsed.length||parsed.some(x=>!Number.isInteger(x)||!Number.isFinite(x))){alert('Enter valid integers separated by commas or spaces.');return;}
+ if(parsed.length>100000){alert('Please use at most 100,000 values.');return;}
+ if(parsed.some(x=>Math.abs(x)>40000)){alert('Problem constraint: each value must be between -40000 and 40000.');return;}
+ nums=parsed.slice();sorted=parsed.slice().sort((a,b)=>(a*a)-(b*b));k=Math.floor((nums.length+1)/2);states=[];cursor=0;
+ push('Start: inspect input',`Input contains ${nums.length} value(s). We sort using each value's square as the key.`,1,'Initialize',0,'—',0,'init');
+ push('Sort by square',`Sorted by x² ascending: ${sorted.map(x=>`${x}²=${x*x}`).join(', ')}. Equal squares can remain in either order; the score is unchanged.`,3,'Sort',0,'—',0,'sort');
+ push('Compute n and k',`n = ${nums.length}; k = (n + 1) // 2 = ${k}. Exactly ${k} positions have a positive sign.`,6,'Set k',0,'—',0,'n');
+ let ans=0;
+ for(let i=0;i<k;i++){
+  const idx=nums.length-1-i,v=sorted[idx],c=v*v;ans+=c;
+  push(`Add largest square · i=${i}`,`ans += nums[n - 1 - i]² = ${v}² = ${c}. This square goes into a positive slot.`,11,'Add',ans,i,c,'add',idx);
+ }
+ for(let i=0;i<nums.length-k;i++){
+  const idx=i,v=sorted[idx],c=v*v;ans-=c;
+  push(`Subtract smallest square · i=${i}`,`ans -= nums[i]² = ${v}² = ${c}. This square goes into a negative slot.`,14,'Subtract',ans,i,-c,'sub',idx);
+ }
+ push('Return final answer',`All ${nums.length} squares have been assigned. Maximum alternating score = ${ans}.`,16,'Return',ans,'—',0,'return');
+ $('nVal').textContent=nums.length;$('kVal').textContent=k;
+ renderTrace();render();
+}
+function renderTrace(){
+ $('traceBody').innerHTML=states.map((s,i)=>`<tr data-i="${i}" class="${i===cursor?'active':''}"><td>${i+1}</td><td>${escapeHtml(s.action)}</td><td>${s.idx}</td><td>${s.contrib>0?'+':''}${s.contrib}</td><td>${s.ans}</td></tr>`).join('');
+}
+function render(){
+ if(!states.length)return;
+ const s=states[cursor];$('stepLabel').textContent=`STEP ${cursor+1} / ${states.length}`;$('opTitle').textContent=s.title;$('opWhy').textContent=s.why;$('ansVal').textContent=s.ans;$('actionVal').textContent=s.action;
+ $('progressFill').style.width=`${((cursor+1)/states.length)*100}%`;$('statusText').textContent=`Step ${cursor+1} of ${states.length} · ${Math.round((cursor+1)/states.length*100)}% complete`;
+ $('arrayCells').innerHTML=s.sorted.map((v,i)=>`<div class="cell ${s.kind==='sort'?'active':''} ${s.kind==='add'&&i===s.arrIndex?'active chosen':''} ${s.kind==='sub'&&i===s.arrIndex?'active subtracted':''}"><div class="idx">sorted[${i}]</div><div class="num">${v}</div><div class="sq">${v}² = ${v*v}</div></div>`).join('');
+ const assign=[];
+ for(let i=0;i<s.n;i++){
+  let pos=i%2===0, v;
+  if(pos){let p=Math.floor(i/2);v=s.sorted[s.n-1-p];}
+  else {let p=Math.floor(i/2);v=s.sorted[p];}
+  const active=(s.kind==='add'&&pos&&Math.floor(i/2)===s.idx)||(s.kind==='sub'&&!pos&&Math.floor(i/2)===s.idx);
+  assign.push(`<div class="cell ${pos?'pos':'neg'} ${active?'active':''}"><div class="slotlabel ${pos?'green':'red'}">${pos?'+ POSITIVE':'− NEGATIVE'}</div><div class="idx">index ${i}</div><div class="num">${v}</div><div class="sq">${pos?'+':'−'}${v*v}</div></div>`);
+ }
+ $('slotCells').innerHTML=assign.join('');
+ $('terms').innerHTML=s.terms.map((t,i)=>`<span class="term ${t.sign==='+'?'plus':'minus'} ${((s.kind==='add'&&t.sign==='+'&&i===s.idx)||(s.kind==='sub'&&t.sign==='-'&&i===s.k+s.idx))?'current':''}">${t.sign}${t.sq}</span>`).join('');
+ renderCode(s.line);$('traceBody').querySelectorAll('tr').forEach((tr,i)=>{tr.classList.toggle('active',i===cursor);if(i===cursor)tr.scrollIntoView({block:'nearest'});});
+ $('prevBtn').disabled=cursor===0;$('nextBtn').disabled=cursor===states.length-1;
+}
+function next(){if(cursor<states.length-1){cursor++;render();}else pause();}
+function prev(){pause();if(cursor>0){cursor--;render();}}
+function play(){if(!states.length)build();if(timer||cursor>=states.length-1)return;timer=setInterval(()=>{if(cursor>=states.length-1){pause();return;}cursor++;render();},Number($('speedSel').value));$('playBtn').textContent='▶ Playing';}
+function pause(){if(timer){clearInterval(timer);timer=null;}$('playBtn').textContent='▶ Play';}
+function reset(){pause();cursor=0;render();}
+$('buildBtn').addEventListener('click',build);$('exampleBtn').addEventListener('click',()=>{$('numsInput').value='1, -1, 2, -2, 3, -3';build();});
+$('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',pause);$('nextBtn').addEventListener('click',()=>{pause();next();});$('prevBtn').addEventListener('click',prev);$('resetBtn').addEventListener('click',reset);
+$('speedSel').addEventListener('change',()=>{if(timer){pause();play();}});
+build();
+</script>
+</body>
+</html>
