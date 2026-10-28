@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temppro Visual Dry Run — Nth in Concatenated Decimal String</title>
+<style>
+:root{--bg:#07111f;--panel:#0c1a2b;--panel2:#101f33;--border:#24415d;--text:#e8f1fb;--muted:#9bb0c8;--cyan:#43d9ff;--blue:#5798ff;--green:#55e6a5;--yellow:#ffd166;--purple:#c49bff;--red:#ff7385}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0%,#10233b 0,#07111f 50%);color:var(--text);font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:12px 16px 9px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{font-size:20px;line-height:1.15;margin:0 0 4px} .subtitle{color:var(--muted);font-size:12px}
+.badge{border:1px solid #2c6680;color:var(--cyan);padding:5px 9px;border-radius:20px;font-size:11px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:220px minmax(350px,1fr) 330px;gap:10px;padding:10px;max-width:1600px;margin:auto}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}.panel{background:linear-gradient(155deg,var(--panel),#091524);border:1px solid var(--border);border-radius:10px;padding:11px;min-width:0;box-shadow:0 5px 18px #0002}
+.panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--cyan);margin:0 0 9px}
+.small{font-size:12px;color:var(--muted)}.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.key{border-color:#276d83;background:linear-gradient(130deg,#0b2434,#0b192a)}.key p{margin:0;font-size:12px;line-height:1.5}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0}.pill{display:inline-block;padding:3px 7px;border:1px solid var(--border);border-radius:6px;background:#07111f;font:12px ui-monospace,monospace}
+.inputrow{display:flex;gap:6px}.inputrow input{width:100%;min-width:0;background:#06101c;color:var(--text);border:1px solid #355574;border-radius:6px;padding:8px;font:14px ui-monospace,monospace}.btn{cursor:pointer;border:1px solid #2e587a;background:#10243a;color:var(--text);padding:7px 9px;border-radius:7px;font-weight:600;font-size:12px}.btn:hover{border-color:var(--cyan)}.btn.primary{background:#064763;border-color:#2389ad;color:#dff9ff}.btn:disabled{opacity:.35;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stat{background:#071321;border:1px solid var(--border);border-radius:7px;padding:7px 5px;text-align:center}.stat b{display:block;font-size:17px;color:var(--yellow);font-family:ui-monospace,monospace}.stat span{font-size:10px;color:var(--muted)}
+.mainviz{min-height:300px}.stephead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.stepcount{font-size:12px;color:var(--muted)}.progress{height:5px;background:#07101b;border-radius:9px;overflow:hidden;margin:8px 0 12px}.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .2s}
+.opbox{padding:9px;border:1px solid #3b6480;border-radius:8px;background:#091a2b;margin-bottom:10px}.opbox strong{color:var(--yellow)}.equation{font-size:15px;font-weight:700;margin:7px 0;word-break:break-word}.groupbar{display:flex;gap:5px;align-items:stretch;margin:12px 0}.group{flex:1;text-align:center;padding:10px 5px;border:1px solid var(--border);border-radius:7px;background:#071321;min-width:0}.group.active{border-color:var(--yellow);box-shadow:inset 0 0 0 1px #ffd16655;background:#2a2415}.group.done{border-color:#286b55;background:#0b261f}.group .big{font:700 19px ui-monospace,monospace;display:block}.group small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.numdisplay{display:flex;justify-content:center;gap:7px;margin:14px 0 8px}.digit{width:56px;height:68px;border-radius:9px;border:1px solid var(--border);background:#071321;display:flex;align-items:center;justify-content:center;font:700 30px ui-monospace,monospace;color:var(--text);position:relative}.digit.target{border:2px solid var(--green);color:var(--green);background:#0a2a22;box-shadow:0 0 18px #55e6a522}.digit .index{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:9px;color:var(--muted)}
+.answer{border:1px solid #2d8064;background:#08251d;border-radius:9px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}.answer .value{font-size:27px;font-weight:800;color:var(--green);font-family:ui-monospace,monospace}.answer .label{font-size:11px;color:#a6d9c5}
+.controlbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}.speed{margin-left:auto;display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}.speed select{background:#071321;color:var(--text);border:1px solid var(--border);padding:5px;border-radius:5px}
+.tracewrap{max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:7px}table{width:100%;border-collapse:collapse;font-size:11px}th{position:sticky;top:0;background:#142840;color:var(--cyan);text-align:left}td,th{padding:7px 8px;border-bottom:1px solid #1d334a;white-space:nowrap}tr.active{background:#2a2514;color:var(--yellow)}tr.done{color:#9bc8b7}
+.code{font-size:11px;line-height:1.48;white-space:pre;overflow:auto;max-height:430px;background:#06101b;border:1px solid #1b334a;border-radius:7px;padding:8px;margin:0}.line{display:block;padding:0 5px;border-left:2px solid transparent}.line.active{background:#342b14;border-left-color:var(--yellow);color:#fff0b7}.kw{color:var(--purple)}.num{color:var(--green)}.fn{color:var(--cyan)}
+.bottomgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini{font-size:11px;color:var(--muted);line-height:1.5}.mini b{color:var(--text)}.formula{font:12px ui-monospace,monospace;background:#071321;padding:6px;border-radius:6px;margin:5px 0;color:#c6dcf6}
+@media(max-width:1050px){.layout{grid-template-columns:210px minmax(0,1fr)}.right{grid-column:1/-1}.code{max-height:260px}}
+@media(max-width:680px){header{align-items:flex-start}.layout{grid-template-columns:1fr;padding:8px}.left,.center,.right{grid-column:1}.mainviz{min-height:0}.groupbar{flex-wrap:wrap}.group{min-width:28%}.code{max-height:340px}.speed{margin-left:0}.bottomgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>Nth in Concatenated Decimal String</h1><div class="subtitle">Temppro · Interactive DSA dry run · O(log n) time · O(1) auxiliary space</div></div>
+ <div class="badge">1-BASED INPUT → 0-BASED DIGIT INDEX</div>
+</header>
+<div class="layout">
+ <aside class="col left">
+  <section class="panel">
+   <h2>Problem input</h2>
+   <div class="small">Find the nth character in 123456789101112...</div>
+   <div class="row"><label for="nInput">Target n</label><span class="pill">1 ≤ n ≤ 10⁹</span></div>
+   <div class="inputrow"><input id="nInput" type="number" min="1" max="1000000000" value="11"><button class="btn primary" id="apply">Run</button></div>
+   <div class="row"><span class="small">Current remaining n</span><span class="pill" id="remain">11</span></div>
+  </section>
+  <section class="panel">
+   <h2>Initial state</h2>
+   <div class="row"><span>length</span><span class="pill" id="vLength">1</span></div>
+   <div class="row"><span>count</span><span class="pill" id="vCount">9</span></div>
+   <div class="row"><span>start</span><span class="pill" id="vStart">1</span></div>
+   <div class="small">Each loop skips one complete digit-length group, if the target lies beyond it.</div>
+  </section>
+  <section class="panel">
+   <h2>Core condition</h2>
+   <div class="formula">while n &gt; length × count</div>
+   <div class="mini">Group digit total = <b>length × count</b>. Skip it only when the remaining target is greater than that total.</div>
+   <div class="formula">num = start + (n−1)//length</div>
+   <div class="formula">idx = (n−1)%length</div>
+  </section>
+  <section class="panel">
+   <h2>Variable meanings</h2>
+   <div class="mini"><b>length</b> — digits per number<br><b>count</b> — numbers in this group<br><b>start</b> — first number in group<br><b>num</b> — target number<br><b>idx</b> — digit index within num</div>
+  </section>
+ </aside>
+
+ <main class="col center">
+  <section class="panel key">
+   <h2>Key idea</h2>
+   <p>Digits ko group-wise skip karo: 1-digit numbers contribute 9 digits, 2-digit numbers contribute 180 digits, and so on. Correct group milne par arithmetic se number aur digit index nikaal lo—full string build nahi karni.</p>
+  </section>
+  <section class="panel mainviz">
+   <div class="stephead"><h2 style="margin:0">Live execution</h2><span class="stepcount" id="stepCount">Step 1 / 1</span></div>
+   <div class="progress"><div id="progress"></div></div>
+   <div class="opbox"><div class="small">CURRENT OPERATION</div><strong id="operation">Initialize variables</strong><div class="equation mono" id="equation">length=1, count=9, start=1, n=11</div><div class="small" id="reason">Set up the one-digit group.</div></div>
+   <div class="groupbar" id="groups"></div>
+   <div class="row"><span class="small">Computed target number</span><span class="pill" id="numValue">—</span></div>
+   <div class="numdisplay" id="digits"></div>
+   <div class="answer"><div><div class="label">FINAL CHARACTER</div><div class="small" id="answerReason">Move through steps to compute the answer.</div></div><div class="value" id="answer">—</div></div>
+   <div class="controlbar">
+    <button class="btn" id="prev">◀ Previous</button><button class="btn primary" id="play">▶ Play</button><button class="btn" id="pause">Ⅱ Pause</button><button class="btn" id="next">Next ▶</button><button class="btn" id="reset">↺ Reset</button>
+    <label class="speed">Speed <select id="speed"><option value="1400">0.5×</option><option value="850" selected>1×</option><option value="450">2×</option><option value="180">4×</option></select></label>
+   </div>
+  </section>
+  <section class="panel">
+   <h2>Execution trace</h2>
+   <div class="tracewrap"><table><thead><tr><th>Step</th><th>Action</th><th>n</th><th>length</th><th>count</th><th>start</th></tr></thead><tbody id="trace"></tbody></table></div>
+  </section>
+  <div class="bottomgrid">
+   <section class="panel"><h2>Correctness</h2><div class="mini">Skipping removes exactly the digits before the target group. Division identifies the target number; modulo identifies its character index.</div></section>
+   <section class="panel"><h2>Complexity & takeaway</h2><div class="mini"><b>Time:</b> O(log n), groups grow by ×10.<br><b>Space:</b> O(1), no concatenated string is stored.</div></section>
+  </div>
+ </main>
+
+ <aside class="col right">
+  <section class="panel">
+   <h2>Submitted Python code</h2>
+   <pre class="code" id="code"><span class="line" data-line="1"><span class="kw">class</span> Solution:</span><span class="line" data-line="2">    <span class="kw">def</span> nthCharacter(self, n):</span><span class="line" data-line="3">        length = <span class="num">1</span></span><span class="line" data-line="4">        count = <span class="num">9</span></span><span class="line" data-line="5">        start = <span class="num">1</span></span><span class="line" data-line="6"></span><span class="line" data-line="7">        <span class="kw">while</span> n &gt; length * count:</span><span class="line" data-line="8">            n -= length * count</span><span class="line" data-line="9">            length += <span class="num">1</span></span><span class="line" data-line="10">            count *= <span class="num">10</span></span><span class="line" data-line="11">            start *= <span class="num">10</span></span><span class="line" data-line="12"></span><span class="line" data-line="13">        num = start + (n - <span class="num">1</span>) // length</span><span class="line" data-line="14">        idx = (n - <span class="num">1</span>) % length</span><span class="line" data-line="15"></span><span class="line" data-line="16">        <span class="kw">return</span> str(num)[idx]</span></pre>
+   <div class="small" style="margin-top:7px">Yellow line highlight is synchronized with the current dry-run operation.</div>
+  </section>
+  <section class="panel">
+   <h2>Important observation</h2>
+   <div class="mini">The first group has <b>9 × 1 = 9</b> digits. The second has <b>90 × 2 = 180</b> digits. Each next group has ten times as many numbers and one extra digit per number.</div>
+  </section>
+ </aside>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let states=[], index=0, timer=null, running=false, inputN=11;
+function makeStates(n0){
+ let n=n0,length=1,count=9,start=1,s=[],step=0;
+ const add=(action,eq,reason,line,extra={})=>s.push({step:++step,action,eq,reason,line,n,length,count,start,...extra});
+ add("Initialize variables",`length=1, count=9, start=1, n=${n}`,"Begin with the single-digit number group.",3);
+ while(true){
+  const total=length*count;
+  add("Check current group",`${n} > ${length} × ${count} = ${total} ?`,n>total?`Target is beyond this group; skip all ${total} digits.`:`Target is inside this group; stop skipping.`,7,{total,willSkip:n>total});
+  if(n<=total) break;
+  n-=total;
+  add("Subtract group digits",`n = ${n+total} − ${total} = ${n}`,"Remove the complete group from the remaining position.",8,{total});
+  length+=1; add("Increase digit length",`length = ${length-1} + 1 = ${length}`,"Move to numbers with one more digit.",9);
+  count*=10; add("Expand group count",`count = ${count/10} × 10 = ${count}`,"There are ten times as many numbers in the next group.",10);
+  start*=10; add("Move group start",`start = ${start/10} × 10 = ${start}`,"The first number in this digit-length group is a power of ten.",11);
+ }
+ const num=start+Math.floor((n-1)/length),idx=(n-1)%length, char=String(num)[idx];
+ add("Calculate target number",`num = ${start} + (${n} − 1) // ${length} = ${num}`,"Integer division gives the offset from the group's first number.",13,{num,idx,char});
+ add("Calculate digit index",`idx = (${n} − 1) % ${length} = ${idx}`,"Modulo gives the zero-based position inside the target number.",14,{num,idx,char});
+ add("Return character",`str(${num})[${idx}] = '${char}'`,"Select the character at the calculated index. This is the answer.",16,{num,idx,char,final:true});
+ return s;
+}
+function render(){
+ const st=states[index]; if(!st)return;
+ $("stepCount").textContent=`Step ${index+1} / ${states.length}`;
+ $("progress").style.width=((index+1)/states.length*100)+"%";
+ $("operation").textContent=st.action;$("equation").textContent=st.eq;$("reason").textContent=st.reason;
+ $("remain").textContent=st.n;$("vLength").textContent=st.length;$("vCount").textContent=st.count;$("vStart").textContent=st.start;
+ $("prev").disabled=index===0;$("next").disabled=index===states.length-1;
+ const groupEls=[
+  {name:"1-digit group",range:"1–9",digits:"9 digits",len:1},
+  {name:"2-digit group",range:"10–99",digits:"180 digits",len:2},
+  {name:"3-digit group",range:"100–999",digits:"2,700 digits",len:3}
+ ];
+ $("groups").innerHTML=groupEls.map(g=>`<div class="group ${g.len<st.length?'done':g.len===st.length?'active':''}"><span class="big">${g.len}d</span><b>${g.range}</b><small>${g.digits}</small></div>`).join("");
+ const num=st.num,idx=st.idx;
+ $("numValue").textContent=num===undefined?"—":num;
+ $("digits").innerHTML=num===undefined?'<div class="small">Target number appears after the arithmetic step.</div>':String(num).split("").map((d,i)=>`<div class="digit ${idx===i?'target':''}">${d}<span class="index">idx ${i}</span></div>`).join("");
+ $("answer").textContent=st.final?`'${st.char}'`:"—";
+ $("answerReason").textContent=st.final?`num=${st.num}, idx=${st.idx}`:"Answer appears at the return step.";
+ $("trace").innerHTML=states.map((x,i)=>`<tr class="${i===index?'active':i<index?'done':''}" data-index="${i}"><td>${x.step}</td><td>${x.action}</td><td>${x.n}</td><td>${x.length}</td><td>${x.count}</td><td>${x.start}</td></tr>`).join("");
+ $("trace").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click",()=>{pause();index=Number(tr.dataset.index);render()}));
+ document.querySelectorAll(".line").forEach(el=>el.classList.toggle("active",Number(el.dataset.line)===st.line));
+}
+function pause(){running=false;if(timer)clearTimeout(timer);timer=null;$("play").textContent="▶ Play"}
+function tick(){if(!running)return;if(index<states.length-1){index++;render();timer=setTimeout(tick,Number($("speed").value))}else pause()}
+function play(){if(running)return;if(index>=states.length-1)index=0;running=true;$("play").textContent="▶ Playing";timer=setTimeout(tick,Number($("speed").value))}
+function runInput(){pause();let v=Number($("nInput").value);if(!Number.isInteger(v)||v<1||v>1e9){alert("Please enter an integer from 1 to 1,000,000,000.");return}inputN=v;states=makeStates(v);index=0;render()}
+$("apply").addEventListener("click",runInput);$("nInput").addEventListener("keydown",e=>{if(e.key==="Enter")runInput()});
+$("prev").addEventListener("click",()=>{pause();if(index>0)index--;render()});
+$("next").addEventListener("click",()=>{pause();if(index<states.length-1)index++;render()});
+$("play").addEventListener("click",play);$("pause").addEventListener("click",pause);
+$("reset").addEventListener("click",()=>{pause();index=0;render()});
+$("speed").addEventListener("change",()=>{if(running){pause();play()}});
+states=makeStates(11);render();
+</script>
+</body>
+</html>
