@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3882 — Minimum XOR Path | Interactive Dry Run</title>
+<style>
+:root{--bg:#080e19;--panel:#101b2b;--panel2:#0b1422;--line:#23415d;--text:#e7f1ff;--muted:#9db1c9;--cyan:#43d9f5;--blue:#639bff;--green:#53e0a0;--yellow:#ffd166;--purple:#c59aff;--red:#ff7b89}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#12233a 0,#080e19 55%);color:var(--text);font:14px/1.35 system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);background:#0a1220}
+h1{font-size:21px;margin:0;letter-spacing:.2px} .tag{color:var(--cyan);font-size:11px;border:1px solid #226078;border-radius:20px;padding:4px 9px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:230px minmax(360px,1fr) minmax(300px,370px);grid-template-rows:minmax(400px,1fr) 170px;gap:10px;padding:10px;max-width:1600px;margin:auto;height:calc(100vh - 57px);min-height:680px}
+.panel{background:linear-gradient(145deg,#111e30,#0c1523);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-height:0}
+.ph{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);padding:9px 11px;border-bottom:1px solid #20364c;font-weight:750}
+.pb{padding:10px}
+.left{display:flex;flex-direction:column;gap:10px;min-height:0}.left .panel{flex:1}
+.key{font-size:12px;color:#c7d7e9}.key strong{color:var(--yellow)}.pill{display:inline-block;border:1px solid #33536e;border-radius:5px;padding:3px 6px;margin:2px;color:#c7eaff;font-size:11px}
+.gridwrap{display:flex;align-items:center;justify-content:center;padding:12px;min-height:190px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(72px,112px));gap:12px}
+.cell{height:76px;border:2px solid #365575;background:#0b1829;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;transition:.2s}
+.cell .num{font-size:26px;font-weight:800}.cell small{color:var(--muted);font-size:11px}
+.cell.active{border-color:var(--yellow);box-shadow:0 0 0 2px #ffd16622,0 0 22px #ffd16622;background:#2a271b}
+.cell.path{border-color:var(--green)}.cell.dest{border-color:var(--purple)}
+.center{display:flex;flex-direction:column;min-height:0}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+.stat{background:#091321;border:1px solid #263f58;border-radius:8px;padding:8px}.stat label{display:block;color:var(--muted);font-size:11px}.stat b{font-size:18px;color:var(--yellow)}
+.op{margin:0 10px 8px;padding:10px;border:1px solid #2c526c;background:#0a1a2a;border-radius:8px;min-height:65px}.op strong{color:var(--cyan)}.op p{margin:4px 0 0;color:#d0dfef}
+.controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 10px 10px}
+button,select{background:#13253a;color:var(--text);border:1px solid #34536f;border-radius:6px;padding:7px 10px;font:inherit;cursor:pointer}button:hover{border-color:var(--cyan)}button.primary{background:#0b536b;border-color:#2ab8d8}button:disabled{opacity:.35;cursor:not-allowed}
+.progress{height:5px;background:#1a2a3d;margin:0 10px 10px;border-radius:5px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0%}
+.result{margin:0 10px 10px;padding:9px 11px;border:1px solid #286b58;background:#0b211f;border-radius:8px;display:flex;justify-content:space-between;align-items:center}.result b{font-size:23px;color:var(--green)}
+.trace{grid-column:1/3}.trace table{width:100%;border-collapse:collapse;font-size:11px}.trace th,.trace td{padding:5px 8px;border-bottom:1px solid #1d3045;text-align:left;white-space:nowrap}.trace th{color:var(--muted);position:sticky;top:0;background:#101b2b}.trace tr.active{background:#24301f;color:#fff}.tracebox{height:130px;overflow:auto}
+.code{display:flex;flex-direction:column;min-height:0}.code pre{margin:0;padding:8px 0;overflow:auto;font:11px/1.48 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;flex:1}.line{display:block;padding:0 10px;color:#d5e5f8}.line.active{background:#24301f;border-left:3px solid var(--yellow);color:#fff}.kw{color:#c59aff}.fn{color:#43d9f5}.numc{color:#ffd166}.comment{color:#7e99b6}
+.note{font-size:11px;color:var(--muted);margin-top:6px}.vars{display:grid;grid-template-columns:1fr 1fr;gap:6px}.v{background:#091321;padding:7px;border-radius:6px;border:1px solid #20374e}.v span{display:block;color:var(--muted);font-size:10px}.v b{color:var(--purple)}
+@media(max-width:950px){.layout{height:auto;min-height:0;grid-template-columns:1fr;grid-template-rows:auto}.left{display:grid;grid-template-columns:1fr 1fr}.trace{grid-column:auto}.code{min-height:420px}.center{min-height:600px}.tracebox{height:180px}}
+@media(max-width:560px){header{align-items:flex-start;flex-direction:column}.left{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,90px)}.cell{height:68px}.status{grid-template-columns:1fr 1fr}.layout{padding:7px;gap:7px}.controls button{padding:7px}}
+</style>
+</head>
+<body>
+<header><h1>3882. Minimum XOR Path in a Grid</h1><span class="tag">DFS + MEMOIZATION · TOP-DOWN DP</span></header>
+<main class="layout">
+<aside class="left">
+ <section class="panel"><div class="ph">01 / Problem input</div><div class="pb">
+  <div class="pill">grid = [[1, 2], [3, 4]]</div>
+  <div class="key" style="margin-top:8px">Start <strong>(0,0)</strong>; finish <strong>(m−1,n−1)</strong>. Only Right or Down moves are allowed.</div>
+ </div></section>
+ <section class="panel"><div class="ph">02 / State & preprocessing</div><div class="pb">
+  <div class="vars"><div class="v"><span>m</span><b>2</b></div><div class="v"><span>n</span><b>2</b></div><div class="v"><span>xor_value</span><b id="vXor">0</b></div><div class="v"><span>dp state</span><b id="vDp">(0,0,1)</b></div></div>
+  <p class="note">dp[i][j][x] stores the minimum result for a memoized state. Values range from 0 to 1023.</p>
+ </div></section>
+ <section class="panel"><div class="ph">03 / Core rule</div><div class="pb">
+  <div class="pill">xor_value ^= grid[i][j]</div>
+  <div class="pill">ans = min(Right, Down)</div>
+  <p class="key">At destination, return the accumulated XOR. Memoize only non-destination states after exploring valid moves.</p>
+ </div></section>
+ <section class="panel"><div class="ph">04 / Variable meanings</div><div class="pb key">
+  <div><strong>i, j</strong> — current row and column</div><div><strong>x</strong> — XOR entering the current call</div><div><strong>dp</strong> — cached result by (i,j,x)</div><div><strong>ans</strong> — minimum child result</div>
+ </div></section>
+</aside>
+<section class="panel center">
+ <div class="ph">Region 2 / Live grid execution</div>
+ <div class="gridwrap"><div class="grid" id="grid">
+  <div class="cell" data-cell="0,0"><small>(0,0)</small><span class="num">1</span></div>
+  <div class="cell" data-cell="0,1"><small>(0,1)</small><span class="num">2</span></div>
+  <div class="cell" data-cell="1,0"><small>(1,0)</small><span class="num">3</span></div>
+  <div class="cell" data-cell="1,1"><small>(1,1)</small><span class="num">4</span></div>
+ </div></div>
+ <div class="status"><div class="stat"><label>STEP / TOTAL</label><b id="stepLabel">1 / 1</b></div><div class="stat"><label>MIN XOR FOUND</label><b id="bestLabel">—</b></div></div>
+ <div class="op"><strong id="opTitle">Ready to execute</strong><p id="opDesc">Press Next or Play to follow the submitted DFS + memoization logic.</p></div>
+ <div class="controls">
+  <button id="play" class="primary">▶ Play</button><button id="pause">Ⅱ Pause</button><button id="prev">← Previous</button><button id="next">Next →</button><button id="reset">↺ Reset</button>
+  <label style="color:var(--muted);font-size:11px">Speed <select id="speed"><option value="1300">0.75×</option><option value="850" selected>1×</option><option value="450">1.5×</option><option value="200">3×</option></select></label>
+ </div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <div class="result"><div><small style="color:var(--muted)">FINAL MINIMUM XOR</small><div id="resultText">Execution not finished</div></div><b id="resultNum">—</b></div>
+</section>
+<section class="panel code"><div class="ph">Submitted code / synchronized line</div><pre id="code">
+<span class="line" data-line="1"><span class="kw">class</span> Solution:</span>
+<span class="line" data-line="2">  <span class="kw">def</span> <span class="fn">dfs</span>(self, grid, i, j, xor_value, m, n, dp):</span>
+<span class="line" data-line="3">    xor_value ^= grid[i][j]</span>
+<span class="line" data-line="4">    <span class="kw">if</span> i == m - 1 <span class="kw">and</span> j == n - 1:</span>
+<span class="line" data-line="5">      <span class="kw">return</span> xor_value</span>
+<span class="line" data-line="6">    <span class="kw">if</span> dp[i][j][xor_value] != -1:</span>
+<span class="line" data-line="7">      <span class="kw">return</span> dp[i][j][xor_value]</span>
+<span class="line" data-line="8">    ans = float(<span class="numc">'inf'</span>)</span>
+<span class="line" data-line="9">    <span class="kw">if</span> j + 1 &lt; n:</span>
+<span class="line" data-line="10">      ans = min(ans, self.dfs(grid,i,j+1,xor_value,m,n,dp))</span>
+<span class="line" data-line="11">    <span class="kw">if</span> i + 1 &lt; m:</span>
+<span class="line" data-line="12">      ans = min(ans, self.dfs(grid,i+1,j,xor_value,m,n,dp))</span>
+<span class="line" data-line="13">    dp[i][j][xor_value] = ans</span>
+<span class="line" data-line="14">    <span class="kw">return</span> dp[i][j][xor_value]</span>
+<span class="line" data-line="15">  <span class="kw">def</span> <span class="fn">minCost</span>(self, grid):</span>
+<span class="line" data-line="16">    m, n = len(grid), len(grid[0])</span>
+<span class="line" data-line="17">    dp = [[[-1]*1024 <span class="kw">for</span> _ <span class="kw">in</span> range(n)] <span class="kw">for</span> _ <span class="kw">in</span> range(m)]</span>
+<span class="line" data-line="18">    <span class="kw">return</span> self.dfs(grid,0,0,0,m,n,dp)</span>
+</pre><div class="pb note">Code lines follow the provided solution. The highlighted line tracks the current conceptual operation.</div></section>
+<section class="panel trace"><div class="ph">Execution trace / call & return timeline</div><div class="tracebox"><table><thead><tr><th>#</th><th>Call / event</th><th>Cell value</th><th>XOR after visit</th><th>Action / return</th></tr></thead><tbody id="traceBody"></tbody></table></div></section>
+</main>
+<script>
+const steps = [
+{line:18,cell:[0,0],x:0,state:"entry",title:"Call dfs(0,0,0)",desc:"Start at top-left. Entering XOR is 0; the cell value will be included now.",xor:"0 → 1",dp:"(0,0,1)",trace:"Call dfs(0,0,0)",val:1,act:"Enter call",path:[]},
+{line:3,cell:[0,0],x:1,state:"visit",title:"XOR current cell",desc:"1 XOR 0 = 1. This call now represents paths reaching (0,0) with XOR 1.",xor:"1",dp:"(0,0,1)",trace:"Visit (0,0)",val:1,act:"xor_value = 1",path:[[0,0]]},
+{line:4,cell:[0,0],x:1,state:"check",title:"Destination check: false",desc:"(0,0) is not (1,1), so continue to memoization and recursive choices.",xor:"1",dp:"(0,0,1)",trace:"Destination check",val:1,act:"Continue",path:[[0,0]]},
+{line:8,cell:[0,0],x:1,state:"branch",title:"Initialize ans = infinity",desc:"No child result is known yet. Explore Right first because that appears first in the code.",xor:"1",dp:"(0,0,1)",trace:"Initialize ans",val:1,act:"ans = ∞",path:[[0,0]]},
+{line:10,cell:[0,1],x:1,state:"visit",title:"Explore Right → (0,1)",desc:"Recursive call receives XOR 1. On entry, it includes grid[0][1] = 2.",xor:"1 XOR 2 = 3",dp:"(0,1,3)",trace:"Call Right (0,1)",val:2,act:"XOR becomes 3",path:[[0,0],[0,1]]},
+{line:3,cell:[0,1],x:3,state:"visit",title:"Update XOR at (0,1)",desc:"1 XOR 2 = 3. This is the accumulated XOR for path (0,0) → (0,1).",xor:"3",dp:"(0,1,3)",trace:"Visit (0,1)",val:2,act:"xor_value = 3",path:[[0,0],[0,1]]},
+{line:4,cell:[0,1],x:3,state:"check",title:"Destination check: false",desc:"(0,1) is not the bottom-right cell. This state has not been computed yet.",xor:"3",dp:"(0,1,3)",trace:"Destination check",val:2,act:"Continue",path:[[0,0],[0,1]]},
+{line:8,cell:[0,1],x:3,state:"branch",title:"Initialize ans = infinity",desc:"Right is unavailable at the last column; Down is the only valid move.",xor:"3",dp:"(0,1,3)",trace:"Initialize ans",val:2,act:"ans = ∞",path:[[0,0],[0,1]]},
+{line:12,cell:[1,1],x:3,state:"visit",title:"Explore Down → destination",desc:"Call (1,1) with incoming XOR 3. Destination entry will XOR in 4.",xor:"3 XOR 4 = 7",dp:"destination",trace:"Call Down (1,1)",val:4,act:"XOR becomes 7",path:[[0,0],[0,1],[1,1]]},
+{line:3,cell:[1,1],x:7,state:"visit",title:"Update XOR at destination",desc:"3 XOR 4 = 7. The full Right → Down path has XOR 7.",xor:"7",dp:"destination",trace:"Visit (1,1)",val:4,act:"xor_value = 7",path:[[0,0],[0,1],[1,1]]},
+{line:4,cell:[1,1],x:7,state:"finish",title:"Destination reached",desc:"Return 7 immediately. The destination case happens before the memoization check.",xor:"7",dp:"destination",trace:"Return from (1,1)",val:4,act:"return 7",path:[[0,0],[0,1],[1,1]],ret:7},
+{line:10,cell:[0,1],x:3,state:"return",title:"Right-child result = 7",desc:"The only child of (0,1) returned 7, so ans becomes 7.",xor:"3",dp:"(0,1,3)",trace:"Return to (0,1)",val:2,act:"ans = min(∞,7) = 7",path:[[0,0],[0,1]]},
+{line:13,cell:[0,1],x:3,state:"memo",title:"Memoize state (0,1,3)",desc:"Store dp[0][1][3] = 7, then return 7 to the start cell.",xor:"3",dp:"dp[0][1][3] = 7",trace:"Memoize (0,1,3)",val:2,act:"Store 7",path:[[0,0],[0,1]]},
+{line:11,cell:[0,0],x:1,state:"branch",title:"Return from Right branch",desc:"At (0,0), the Right branch has result 7. Now the code explores Down.",xor:"1",dp:"(0,0,1)",trace:"Right result = 7",val:1,act:"ans = 7",path:[[0,0]]},
+{line:12,cell:[1,0],x:1,state:"visit",title:"Explore Down → (1,0)",desc:"The second recursive branch starts from (1,0) with incoming XOR 1.",xor:"1 XOR 3 = 2",dp:"(1,0,2)",trace:"Call Down (1,0)",val:3,act:"XOR becomes 2",path:[[0,0],[1,0]]},
+{line:3,cell:[1,0],x:2,state:"visit",title:"Update XOR at (1,0)",desc:"1 XOR 3 = 2. This is the accumulated XOR for the Down branch.",xor:"2",dp:"(1,0,2)",trace:"Visit (1,0)",val:3,act:"xor_value = 2",path:[[0,0],[1,0]]},
+{line:4,cell:[1,0],x:2,state:"check",title:"Destination check: false",desc:"(1,0) is not the destination. Its only valid move is Right.",xor:"2",dp:"(1,0,2)",trace:"Destination check",val:3,act:"Continue",path:[[0,0],[1,0]]},
+{line:8,cell:[1,0],x:2,state:"branch",title:"Initialize ans = infinity",desc:"Down is out of bounds; Right is the only valid child.",xor:"2",dp:"(1,0,2)",trace:"Initialize ans",val:3,act:"ans = ∞",path:[[0,0],[1,0]]},
+{line:10,cell:[1,1],x:2,state:"visit",title:"Explore Right → destination",desc:"Call destination with XOR 2; entering the destination adds 4.",xor:"2 XOR 4 = 6",dp:"destination",trace:"Call Right (1,1)",val:4,act:"XOR becomes 6",path:[[0,0],[1,0],[1,1]]},
+{line:3,cell:[1,1],x:6,state:"visit",title:"Update XOR at destination",desc:"2 XOR 4 = 6. The Down → Right path has XOR 6.",xor:"6",dp:"destination",trace:"Visit (1,1)",val:4,act:"xor_value = 6",path:[[0,0],[1,0],[1,1]]},
+{line:5,cell:[1,1],x:6,state:"finish",title:"Destination returns 6",desc:"The second valid path returns 6, which is lower than the first path's 7.",xor:"6",dp:"destination",trace:"Return from (1,1)",val:4,act:"return 6",path:[[0,0],[1,0],[1,1]],ret:6},
+{line:12,cell:[1,0],x:2,state:"return",title:"Down-child result = 6",desc:"At (1,0), ans = min(infinity, 6) = 6.",xor:"2",dp:"(1,0,2)",trace:"Return to (1,0)",val:3,act:"ans = 6",path:[[0,0],[1,0]]},
+{line:13,cell:[1,0],x:2,state:"memo",title:"Memoize state (1,0,2)",desc:"Store dp[1][0][2] = 6 and return 6 to the start cell.",xor:"2",dp:"dp[1][0][2] = 6",trace:"Memoize (1,0,2)",val:3,act:"Store 6",path:[[0,0],[1,0]]},
+{line:12,cell:[0,0],x:1,state:"return",title:"Compare both branches",desc:"Right returned 7 and Down returned 6. The start state's answer becomes min(7,6) = 6.",xor:"1",dp:"(0,0,1)",trace:"Compare child results",val:1,act:"ans = min(7,6) = 6",path:[[0,0]]},
+{line:13,cell:[0,0],x:1,state:"memo",title:"Memoize start state",desc:"Store dp[0][0][1] = 6. The initial call returns this minimum value.",xor:"1",dp:"dp[0][0][1] = 6",trace:"Memoize (0,0,1)",val:1,act:"Store 6",path:[[0,0]]},
+{line:18,cell:[0,0],x:1,state:"done",title:"Execution complete",desc:"Both valid paths were evaluated. The minimum path XOR is 6.",xor:"final = 6",dp:"complete",trace:"Final answer",val:1,act:"return 6",path:[[0,0]],ret:6}
+];
+let idx=0,timer=null;
+const $=id=>document.getElementById(id);
+function render(){
+ const s=steps[idx];
+ $('stepLabel').textContent=(idx+1)+' / '+steps.length;
+ $('bar').style.width=((idx+1)/steps.length*100)+'%';
+ $('opTitle').textContent=s.title;$('opDesc').textContent=s.desc;
+ $('vXor').textContent=s.xor;$('vDp').textContent=s.dp;
+ $('bestLabel').textContent=idx===steps.length-1?'6':(idx>=23?'6':idx>=11?'7':'—');
+ $('resultText').textContent=idx===steps.length-1?'Both paths compared': 'Updates as DFS returns';
+ $('resultNum').textContent=idx===steps.length-1?'6':'—';
+ document.querySelectorAll('.line').forEach(el=>el.classList.toggle('active',+el.dataset.line===s.line));
+ document.querySelectorAll('.cell').forEach(el=>{
+  const key=el.dataset.cell, path=(s.path||[]).some(p=>p.join(',')===key);
+  el.classList.toggle('active',s.cell.join(',')===key);
+  el.classList.toggle('path',path && s.cell.join(',')!==key);
+  el.classList.toggle('dest',key==='1,1' && s.cell.join(',')!=='1,1');
+ });
+ $('prev').disabled=idx===0;$('next').disabled=idx===steps.length-1;
+ const tbody=$('traceBody');tbody.innerHTML='';
+ steps.forEach((st,k)=>{
+  if(k>idx)return;
+  const tr=document.createElement('tr');if(k===idx)tr.className='active';
+  const cols=[k+1,st.trace,st.cell.map(Number).join(','),st.xor,st.act];
+  cols.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
+  tbody.appendChild(tr);
+ });
+ const box=document.querySelector('.tracebox');box.scrollTop=box.scrollHeight;
+}
+function stop(){if(timer){clearInterval(timer);timer=null} $('play').textContent='▶ Play'}
+function next(){if(idx<steps.length-1){idx++;render()}else stop()}
+$('play').onclick=()=>{if(timer)return;if(idx===steps.length-1)idx=0;$('play').textContent='▶ Playing';timer=setInterval(()=>{if(idx>=steps.length-1){stop();return}next()},+$('speed').value);render()};
+$('pause').onclick=stop;
+$('next').onclick=()=>{stop();next()};
+$('prev').onclick=()=>{stop();if(idx>0){idx--;render()}};
+$('reset').onclick=()=>{stop();idx=0;render()};
+$('speed').onchange=()=>{if(timer){stop();$('play').click()}};
+render();
+</script>
+</body></html>
